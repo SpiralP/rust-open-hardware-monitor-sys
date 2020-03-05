@@ -1,6 +1,6 @@
 mod interface;
 
-use crate::interface::*;
+pub use crate::interface::*;
 
 #[cfg(test)]
 mod tests {

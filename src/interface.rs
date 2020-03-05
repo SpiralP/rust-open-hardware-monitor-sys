@@ -10,6 +10,7 @@ extern "C" {
 
   pub fn char_ptr_delete(ptr: *mut c_char);
   pub fn Computer_Open(computerPtr: *mut c_void);
+
   pub fn Computer_UpdateAll(computerPtr: *mut c_void);
   pub fn Computer_GetValues(computerPtr: *mut c_void) -> *const c_float;
 }
