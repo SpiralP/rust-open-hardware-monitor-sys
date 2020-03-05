@@ -1,5 +1,5 @@
 [package]
-name = "rust-open-hardware-monitor"
+name = "open-hardware-monitor"
 version = "0.1.0"
 authors = ["SpiralP <spiral.palmer@gmail.com>"]
 edition = "2018"
