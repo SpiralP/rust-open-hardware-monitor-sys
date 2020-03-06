@@ -1,5 +1,4 @@
-use std::env;
-use std::path::*;
+use std::{env, path::PathBuf};
 
 fn main() {
   let target = env::var("TARGET").unwrap();
@@ -13,7 +12,7 @@ fn main() {
   env::set_current_dir(current_dir.join("openhardwaremonitor")).unwrap();
 
   assert!(msbuild
-    .arg("/p:Configuration=Release")
+    .arg("/p:Configuration=Debug")
     .arg(format!("/p:OutputPath={}", out_dir))
     .arg("OpenHardwareMonitorLib.csproj")
     .status()
@@ -32,7 +31,39 @@ fn main() {
     .compile("interface");
 
   // MSCOREE.lib
-  println!("cargo:rustc-link-search=static=C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Lib\\um\\x64");
+  println!(
+    "cargo:rustc-link-search=static=C:\\Program Files (x86)\\Windows \
+     Kits\\NETFXSDK\\4.8\\Lib\\um\\x64"
+  );
+
+  println!("cargo:rerun-if-changed=src/interface.hpp");
+
+  // The bindgen::Builder is the main entry point
+  // to bindgen, and lets you build up options for
+  // the resulting bindings.
+  let bindings = bindgen::Builder::default()
+    .disable_name_namespacing()
+    .default_enum_style(bindgen::EnumVariation::Rust {
+      non_exhaustive: false,
+    })
+    // The input header we would like to generate
+    // bindings for.
+    .header("./src/interface.hpp")
+    // Tell cargo to invalidate the built crate whenever any of the
+    // included header files changed.
+    .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+
+    .no_copy("FFI.*")
+    // Finish the builder and generate the bindings.
+    .generate()
+    // Unwrap the Result and panic on failure.
+    .expect("Unable to generate bindings");
+
+  // Write the bindings to the $OUT_DIR/bindings.rs file.
+  let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+  bindings
+    .write_to_file(out_path.join("bindings.rs"))
+    .expect("Couldn't write bindings!");
 
   // The user must then put OpenHardwareMonitorLib.dll in
   // the same directory as their executable!
