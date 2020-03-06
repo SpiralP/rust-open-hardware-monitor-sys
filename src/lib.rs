@@ -1,8 +1,9 @@
 mod bindings;
+mod helpers;
 
 pub use crate::bindings::*;
+use crate::helpers::take_zeroed;
 use failure::{Error, Fail};
-use std::mem;
 
 #[derive(Debug, Fail)]
 pub enum ComputerError {
@@ -49,12 +50,6 @@ impl Computer {
         .collect::<Result<Vec<_>, _>>()?,
     )
   }
-}
-
-fn take_zeroed<T>(value: &mut T) -> T {
-  let mut swap_me: T = unsafe { mem::zeroed() };
-  mem::swap(&mut swap_me, value);
-  swap_me
 }
 
 #[derive(Debug)]

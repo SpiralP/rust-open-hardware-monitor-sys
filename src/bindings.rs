@@ -2,8 +2,9 @@
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
+use crate::helpers::take_zeroed;
 use failure::{Error, Fail};
-use std::{ffi::c_void, mem, ops::Deref, string};
+use std::{ffi::c_void, ops::Deref, string};
 use widestring::WideCStr;
 
 impl Deref for FFIGCHandle {
@@ -17,12 +18,8 @@ impl Deref for FFIGCHandle {
 impl Drop for FFIGCHandle {
   fn drop(&mut self) {
     if !self.is_null() {
-      // println!("dropping GCHandle");
       unsafe {
-        // hack to allow us to "take" and not use a reference
-        let mut swap_me: FFIGCHandle = mem::zeroed();
-        mem::swap(&mut swap_me, self);
-        GCHandle_Free(swap_me);
+        GCHandle_Free(take_zeroed(self));
       }
     }
   }
@@ -60,12 +57,8 @@ impl Deref for FFICharPtr {
 impl Drop for FFICharPtr {
   fn drop(&mut self) {
     if !self.is_null() {
-      // println!("dropping CharPtr");
       unsafe {
-        // hack to allow us to "take" and not use a reference
-        let mut swap_me: FFICharPtr = mem::zeroed();
-        mem::swap(&mut swap_me, self);
-        CharPtr_delete(swap_me);
+        CharPtr_delete(take_zeroed(self));
       }
     }
   }
