@@ -55,8 +55,8 @@ impl Computer {
 #[derive(Debug)]
 pub struct Hardware {
   inner: FFIGCHandle,
-  name: String,
-  hardware_type: FFIHardwareType,
+  pub name: String,
+  pub hardware_type: FFIHardwareType,
 }
 impl Hardware {
   fn from_ffi(ffi_hardware: FFIHardware) -> Result<Self, Error> {
@@ -99,8 +99,8 @@ impl Hardware {
 #[derive(Debug)]
 pub struct Sensor {
   inner: FFIGCHandle,
-  name: String,
-  sensor_type: FFISensorType,
+  pub name: String,
+  pub sensor_type: FFISensorType,
 }
 impl Sensor {
   fn from_ffi(ffi_sensor: FFISensor) -> Result<Self, Error> {
