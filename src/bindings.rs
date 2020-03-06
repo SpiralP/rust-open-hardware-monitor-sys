@@ -2,12 +2,9 @@
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
-use std::{
-  ffi::{c_void, CStr},
-  mem,
-  ops::Deref,
-  os::raw::c_char,
-};
+use failure::{Error, Fail};
+use std::{ffi::c_void, mem, ops::Deref, string};
+use widestring::WideCStr;
 
 impl Deref for FFIGCHandle {
   type Target = *mut c_void;
@@ -31,15 +28,29 @@ impl Drop for FFIGCHandle {
   }
 }
 
-impl ToString for FFICharPtr {
-  fn to_string(&self) -> String {
-    let c_str = unsafe { CStr::from_ptr(self.ptr) };
-    c_str.to_string_lossy().to_string()
+#[derive(Debug, Fail)]
+pub enum FFICharPtrError {
+  #[fail(display = "pointer is null")]
+  Null,
+
+  #[fail(display = "utf16 error: {}", error)]
+  Utf16 { error: string::FromUtf16Error },
+}
+
+impl FFICharPtr {
+  pub fn to_string(&self) -> Result<String, Error> {
+    if self.is_null() {
+      return Err(FFICharPtrError::Null.into());
+    }
+
+    let wide_c_str = unsafe { WideCStr::from_ptr_str(self.ptr) };
+
+    Ok(wide_c_str.to_string()?)
   }
 }
 
 impl Deref for FFICharPtr {
-  type Target = *mut c_char;
+  type Target = *mut u16;
 
   fn deref(&self) -> &Self::Target {
     &self.ptr

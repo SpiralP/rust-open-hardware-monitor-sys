@@ -13,11 +13,11 @@ using namespace System::Runtime::InteropServices;
 
 
 FFICharPtr CharPtr_new(String^ managedStr) {
-	auto str = msclr::interop::marshal_as<std::string>(managedStr);
+	auto str = msclr::interop::marshal_as<std::wstring>(managedStr);
 	size_t length = str.length();
 
-	char* c_str = new char[length + 1];
-	strcpy_s(c_str, length + 1, str.c_str());
+	wchar_t* c_str = new wchar_t[length + 1];
+	wcscpy_s(c_str, length + 1, str.c_str());
 
 	return { c_str };
 }

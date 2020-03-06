@@ -9,7 +9,7 @@ struct FFIGCHandle {
 EXPORT void GCHandle_Free(FFIGCHandle handle);
 
 struct FFICharPtr {
-	char* ptr;
+	wchar_t* ptr;
 };
 
 EXPORT void CharPtr_delete(FFICharPtr charPtr);
