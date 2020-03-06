@@ -42,6 +42,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/doc
 
+      - name: Copy OpenHardwareMonitorLib.dll to same dir as test exe
+        run: |
+          Copy-Item .\target\debug\build\open-hardware-monitor-*\out\OpenHardwareMonitorLib.dll .\target\debug\deps\
+
       - name: Test
         uses: actions-rs/cargo@v1
         with:
