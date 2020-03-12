@@ -26,7 +26,7 @@ impl Drop for FFIGCHandle {
 }
 
 #[derive(Debug, Fail)]
-pub enum FFICharPtrError {
+pub enum FFIWCharPtrError {
   #[fail(display = "pointer is null")]
   Null,
 
@@ -34,10 +34,10 @@ pub enum FFICharPtrError {
   Utf16 { error: string::FromUtf16Error },
 }
 
-impl FFICharPtr {
+impl FFIWCharPtr {
   pub fn to_string(&self) -> Result<String, Error> {
     if self.is_null() {
-      return Err(FFICharPtrError::Null.into());
+      return Err(FFIWCharPtrError::Null.into());
     }
 
     let wide_c_str = unsafe { WideCStr::from_ptr_str(self.ptr) };
@@ -46,7 +46,7 @@ impl FFICharPtr {
   }
 }
 
-impl Deref for FFICharPtr {
+impl Deref for FFIWCharPtr {
   type Target = *mut u16;
 
   fn deref(&self) -> &Self::Target {
@@ -54,11 +54,11 @@ impl Deref for FFICharPtr {
   }
 }
 
-impl Drop for FFICharPtr {
+impl Drop for FFIWCharPtr {
   fn drop(&mut self) {
     if !self.is_null() {
       unsafe {
-        CharPtr_delete(take_zeroed(self));
+        WCharPtr_delete(take_zeroed(self));
       }
     }
   }

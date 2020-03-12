@@ -12,7 +12,7 @@ using namespace std;
 using namespace System::Runtime::InteropServices;
 
 
-FFICharPtr CharPtr_new(String^ managedStr) {
+FFIWCharPtr WCharPtr_new(String^ managedStr) {
 	auto str = msclr::interop::marshal_as<std::wstring>(managedStr);
 	size_t length = str.length();
 
@@ -36,15 +36,15 @@ EXPORT FFIGCHandle Computer_new() {
 	return { ptr };
 }
 
-EXPORT FFICharPtr Computer_GetReport(const FFIGCHandle& computerHandle) {
+EXPORT FFIWCharPtr Computer_GetReport(const FFIGCHandle& computerHandle) {
 	auto handle = GCHandle::FromIntPtr((IntPtr)computerHandle.ptr);
 	auto computer = (Computer^)(handle.Target);
 
-	return CharPtr_new(computer->GetReport());
+	return WCharPtr_new(computer->GetReport());
 }
 
-EXPORT void CharPtr_delete(FFICharPtr charPtr) {
-	delete[] charPtr.ptr;
+EXPORT void WCharPtr_delete(FFIWCharPtr wCharPtr) {
+	delete[] wCharPtr.ptr;
 }
 
 
@@ -68,7 +68,7 @@ EXPORT FFIHardwares Computer_GetHardwares(const FFIGCHandle& computerHandle) {
 
 		FFIHardware* hardware = &hardwares.items[hardwares.length];
 		hardware->ptr = { ptr };
-		hardware->name = CharPtr_new(hardwareItem->Name);
+		hardware->name = WCharPtr_new(hardwareItem->Name);
 		hardware->hardwareType = static_cast<FFIHardwareType>(hardwareItem->HardwareType);
 
 		hardwares.length += 1;
@@ -88,7 +88,7 @@ EXPORT FFIHardwares Hardware_GetSubHardwares(const FFIGCHandle& hardwareHandle) 
 
 		FFIHardware* hardware = &hardwares.items[hardwares.length];
 		hardware->ptr = { ptr };
-		hardware->name = CharPtr_new(hardwareItem->Name);
+		hardware->name = WCharPtr_new(hardwareItem->Name);
 		hardware->hardwareType = static_cast<FFIHardwareType>(hardwareItem->HardwareType);
 
 		hardwares.length += 1;
@@ -118,7 +118,7 @@ EXPORT FFISensors Hardware_GetSensors(const FFIGCHandle& hardwareHandle) {
 
 		FFISensor* sensor = &sensors.items[sensors.length];
 		sensor->ptr = { ptr };
-		sensor->name = CharPtr_new(sensorItem->Name);
+		sensor->name = WCharPtr_new(sensorItem->Name);
 		sensor->sensorType = static_cast<FFISensorType>(sensorItem->SensorType);
 
 		sensors.length += 1;

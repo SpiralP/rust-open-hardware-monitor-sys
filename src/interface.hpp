@@ -8,15 +8,15 @@ struct FFIGCHandle {
 
 EXPORT void GCHandle_Free(FFIGCHandle handle);
 
-struct FFICharPtr {
+struct FFIWCharPtr {
 	wchar_t* ptr;
 };
 
-EXPORT void CharPtr_delete(FFICharPtr charPtr);
+EXPORT void WCharPtr_delete(FFIWCharPtr wCharPtr);
 
 EXPORT FFIGCHandle Computer_new();
 
-EXPORT FFICharPtr Computer_GetReport(const FFIGCHandle& computerHandle);
+EXPORT FFIWCharPtr Computer_GetReport(const FFIGCHandle& computerHandle);
 
 EXPORT void Computer_Open(const FFIGCHandle& computerHandle);
 
@@ -34,7 +34,7 @@ enum FFIHardwareType {
 
 struct FFIHardware {
 	FFIGCHandle ptr;
-	FFICharPtr name;
+	FFIWCharPtr name;
 	FFIHardwareType hardwareType;
 };
 
@@ -67,7 +67,7 @@ enum FFISensorType {
 
 struct FFISensor {
 	FFIGCHandle ptr;
-	FFICharPtr name;
+	FFIWCharPtr name;
 	FFISensorType sensorType;
 };
 
