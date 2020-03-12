@@ -44,7 +44,7 @@ jobs:
 
       - name: Copy OpenHardwareMonitorLib.dll to same dir as test exe
         run: |
-          Copy-Item .\target\debug\build\open-hardware-monitor-*\out\OpenHardwareMonitorLib.dll .\target\debug\deps\
+          Copy-Item .\target\debug\build\open-hardware-monitor-sys-*\out\OpenHardwareMonitorLib.dll .\target\debug\deps\
 
       - name: Test
         uses: actions-rs/cargo@v1

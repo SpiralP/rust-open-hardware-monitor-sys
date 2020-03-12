@@ -11,8 +11,14 @@ fn main() {
   let current_dir = env::current_dir().unwrap();
   env::set_current_dir(current_dir.join("openhardwaremonitor")).unwrap();
 
+  let mode = if cfg!(debug_assertions) {
+    "Debug"
+  } else {
+    "Release"
+  };
+
   assert!(msbuild
-    .arg("/p:Configuration=Debug")
+    .arg(format!("/p:Configuration={}", mode))
     .arg(format!("/p:OutputPath={}", out_dir))
     .arg("OpenHardwareMonitorLib.csproj")
     .status()
