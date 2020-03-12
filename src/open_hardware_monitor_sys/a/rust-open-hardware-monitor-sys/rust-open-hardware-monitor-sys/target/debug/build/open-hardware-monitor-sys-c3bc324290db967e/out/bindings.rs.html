@@ -338,40 +338,40 @@
 }
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FFICharPtr</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FFIWCharPtr</span> {
     <span class="kw">pub</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u16</span>,
 }
 <span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">bindgen_test_layout_FFICharPtr</span>() {
+<span class="kw">fn</span> <span class="ident">bindgen_test_layout_FFIWCharPtr</span>() {
     <span class="macro">assert_eq</span><span class="macro">!</span>(
-        ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">FFICharPtr</span><span class="op">&gt;</span>(),
+        ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">FFIWCharPtr</span><span class="op">&gt;</span>(),
         <span class="number">8usize</span>,
-        <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Size of: &quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="ident">FFICharPtr</span>))
+        <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Size of: &quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="ident">FFIWCharPtr</span>))
     );
     <span class="macro">assert_eq</span><span class="macro">!</span>(
-        ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">FFICharPtr</span><span class="op">&gt;</span>(),
+        ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">FFIWCharPtr</span><span class="op">&gt;</span>(),
         <span class="number">8usize</span>,
-        <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Alignment of &quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="ident">FFICharPtr</span>))
+        <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Alignment of &quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="ident">FFIWCharPtr</span>))
     );
     <span class="macro">assert_eq</span><span class="macro">!</span>(
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>(::<span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">null</span>::<span class="op">&lt;</span><span class="ident">FFICharPtr</span><span class="op">&gt;</span>())).<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="ident">usize</span> },
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>(::<span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">null</span>::<span class="op">&lt;</span><span class="ident">FFIWCharPtr</span><span class="op">&gt;</span>())).<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="ident">usize</span> },
         <span class="number">0usize</span>,
         <span class="macro">concat</span><span class="macro">!</span>(
             <span class="string">&quot;Offset of field: &quot;</span>,
-            <span class="macro">stringify</span><span class="macro">!</span>(<span class="ident">FFICharPtr</span>),
+            <span class="macro">stringify</span><span class="macro">!</span>(<span class="ident">FFIWCharPtr</span>),
             <span class="string">&quot;::&quot;</span>,
             <span class="macro">stringify</span><span class="macro">!</span>(<span class="ident">ptr</span>)
         )
     );
 }
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">CharPtr_delete</span>(<span class="ident">charPtr</span>: <span class="ident">FFICharPtr</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">WCharPtr_delete</span>(<span class="ident">wCharPtr</span>: <span class="ident">FFIWCharPtr</span>);
 }
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Computer_new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FFIGCHandle</span>;
 }
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Computer_GetReport</span>(<span class="ident">computerHandle</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">FFIGCHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FFICharPtr</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Computer_GetReport</span>(<span class="ident">computerHandle</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">FFIGCHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FFIWCharPtr</span>;
 }
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Computer_Open</span>(<span class="ident">computerHandle</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">FFIGCHandle</span>);
@@ -393,7 +393,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FFIHardware</span> {
     <span class="kw">pub</span> <span class="ident">ptr</span>: <span class="ident">FFIGCHandle</span>,
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">FFICharPtr</span>,
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">FFIWCharPtr</span>,
     <span class="kw">pub</span> <span class="ident">hardwareType</span>: <span class="ident">FFIHardwareType</span>,
 }
 <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -508,7 +508,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FFISensor</span> {
     <span class="kw">pub</span> <span class="ident">ptr</span>: <span class="ident">FFIGCHandle</span>,
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">FFICharPtr</span>,
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">FFIWCharPtr</span>,
     <span class="kw">pub</span> <span class="ident">sensorType</span>: <span class="ident">FFISensorType</span>,
 }
 <span class="attribute">#[<span class="ident">test</span>]</span>
